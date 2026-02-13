@@ -1,6 +1,6 @@
 import type { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import { compare } from "bcryptjs"
+// import { compare } from "bcryptjs"
 import { getServerSession } from "next-auth/next"
 import { getDb } from "@/lib/mongo/db"
 import { ensureEnv } from "@/lib/env"
