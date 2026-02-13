@@ -1,16 +1,8 @@
 import { redirect, notFound } from "next/navigation"
-import dynamic from "next/dynamic"
 import { getServerAuthSession } from "@/auth"
 import { getEntryById } from "@/lib/data/entries"
 import { getProjectsForSelect } from "@/lib/data/projects"
-
-const EntryDetail = dynamic(
-  () =>
-    import("@/components/diary/entry-detail").then((mod) => ({
-      default: mod.EntryDetail,
-    })),
-  { ssr: false }
-)
+import { EntryDetail } from "@/components/diary/entry-detail"
 
 export default async function EntryDetailPage({
   params,

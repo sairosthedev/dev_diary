@@ -1,16 +1,8 @@
 import { redirect, notFound } from "next/navigation"
-import dynamic from "next/dynamic"
 import { getServerAuthSession } from "@/auth"
 import { getProjectById } from "@/lib/data/projects"
 import { getEntriesByProject } from "@/lib/data/entries"
-
-const ProjectDetail = dynamic(
-  () =>
-    import("@/components/diary/project-detail").then((mod) => ({
-      default: mod.ProjectDetail,
-    })),
-  { ssr: false }
-)
+import { ProjectDetail } from "@/components/diary/project-detail"
 
 export default async function ProjectDetailPage({
   params,

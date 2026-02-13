@@ -1,12 +1,4 @@
-import dynamic from "next/dynamic"
-
-const ProjectForm = dynamic(
-  () =>
-    import("@/components/diary/project-form").then((mod) => ({
-      default: mod.ProjectForm,
-    })),
-  { ssr: false }
-)
+import { ProjectForm } from "@/components/diary/project-form"
 
 export default function NewProjectPage() {
   return (

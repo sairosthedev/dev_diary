@@ -35,7 +35,7 @@ export function ensureEnv(keys: string[]) {
 
   const envLocal = parseEnvLocal()
   for (const key of keys) {
-    if (!process.env[key] && envLocal[key]) {
+    if (envLocal[key]) {
       process.env[key] = envLocal[key]
     }
   }

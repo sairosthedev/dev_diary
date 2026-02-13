@@ -19,27 +19,35 @@ export async function POST(request: Request) {
     )
   }
 
-  const db = await getDb()
-  const existing = await db
-    .collection("users")
-    .findOne({ email: normalizedEmail })
+  try {
+    const db = await getDb()
+    const existing = await db
+      .collection("users")
+      .findOne({ email: normalizedEmail })
 
-  if (existing) {
+    if (existing) {
+      return NextResponse.json(
+        { error: "An account with this email already exists." },
+        { status: 409 }
+      )
+    }
+
+    const passwordHash = await hash(rawPassword, 12)
+    const now = new Date()
+
+    const result = await db.collection("users").insertOne({
+      email: normalizedEmail,
+      password_hash: passwordHash,
+      created_at: now,
+      updated_at: now,
+    })
+
+    return NextResponse.json({ id: result.insertedId.toString() })
+  } catch (error) {
+    console.error("Register error:", error)
     return NextResponse.json(
-      { error: "An account with this email already exists." },
-      { status: 409 }
+      { error: "Unable to create account" },
+      { status: 500 }
     )
   }
-
-  const passwordHash = await hash(rawPassword, 12)
-  const now = new Date()
-
-  const result = await db.collection("users").insertOne({
-    email: normalizedEmail,
-    password_hash: passwordHash,
-    created_at: now,
-    updated_at: now,
-  })
-
-  return NextResponse.json({ id: result.insertedId.toString() })
 }

@@ -49,8 +49,21 @@ export default function SignUpPage() {
       })
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data?.error || "Unable to create account")
+        const body = await response.text()
+        let errorMessage = "Unable to create account"
+
+        try {
+          const data = JSON.parse(body)
+          if (data?.error) {
+            errorMessage = data.error
+          }
+        } catch {
+          if (body) {
+            errorMessage = body
+          }
+        }
+
+        throw new Error(errorMessage)
       }
 
       const result = await signIn("credentials", {
